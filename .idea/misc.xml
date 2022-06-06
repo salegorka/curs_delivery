@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Android/curs_delivery/app/src/main/res/drawable/orange_button.xml" value="0.2985" />
+        <entry key="..\:/Android/curs_delivery/app/src/main/res/drawable/orange_light_banner.xml" value="0.192" />
+        <entry key="..\:/Android/curs_delivery/app/src/main/res/drawable/search_background.xml" value="0.192" />
         <entry key="..\:/Android/curs_delivery/app/src/main/res/layout/activity_intro.xml" value="0.358695652173913" />
-        <entry key="..\:/Android/curs_delivery/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/Android/curs_delivery/app/src/main/res/layout/activity_main.xml" value="0.25" />
       </map>
     </option>
   </component>
