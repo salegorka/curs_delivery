@@ -136,16 +136,22 @@
             app:fabCradleMargin="8dp"
             app:fabCradleRoundedCornerRadius="50dp"
             app:fabCradleVerticalOffset="6dp"
-            android:layout_gravity="bottom">
+            app:fabAlignmentMode="center"
+            android:layout_gravity="bottom"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:gravity="center">
+
 
                 <LinearLayout
                     android:id="@+id/homeBtn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.2"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <ImageView
@@ -169,7 +175,7 @@
                     android:id="@+id/homeBtn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.2"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <ImageView
@@ -193,7 +199,7 @@
                     android:id="@+id/homeBtn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.2"
+                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:visibility="invisible">
 
@@ -218,7 +224,7 @@
                     android:id="@+id/homeBtn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.2"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <ImageView
@@ -242,9 +248,8 @@
                     android:id="@+id/homeBtn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.2"
-                    android:orientation="vertical"
-                    >
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageView2"
@@ -258,10 +263,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Home"
-                        android:textColor="#676767"
-                        android:textSize="12sp"
                         android:textAlignment="center"
-                        />
+                        android:textColor="#676767"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.bottomappbar.BottomAppBar>
@@ -269,7 +273,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#ff5e80"
-            android:elevation="3dp"
+            android:elevation="6dp"
             android:src="@drawable/orange_button"
             app:backgroundTint="#ff5e00"
             app:layout_anchor="@id/app_bar"
