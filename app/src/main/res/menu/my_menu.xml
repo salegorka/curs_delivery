@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_menu"
+        app:showAsAction="always"
+        android:icon="@drawable/shop"
+        android:title="@string/menu" />
+    <item
+        android:id="@+id/action_calendar"
+        app:showAsAction="always"
+        android:icon="@drawable/calendar"
+        android:title="@string/calendar" />
+    <item
+        android:id="@+id/action_cart"
+        app:showAsAction="always"
+        android:icon="@drawable/shopping_cart"
+        android:title="@string/cart" />
+    <item
+        android:id="@+id/action_profile"
+        app:showAsAction="always"
+        android:icon="@drawable/user"
+        android:title="@string/profile" />
+</menu>

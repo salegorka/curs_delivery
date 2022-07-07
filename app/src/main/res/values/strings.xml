@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">curs_delivery</string>
+    <string name="menu">Меню</string>
+    <string name="cart">Корзина</string>
+    <string name="calendar">Календарь</string>
+    <string name="profile">Профиль</string>
+    <string name="popular">Популярно</string>
 </resources>
