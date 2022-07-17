@@ -1,6 +1,5 @@
 package com.example.curs_delivery.Activity;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.curs_delivery.Adapter.ProductCategoryAdapter;
 import com.example.curs_delivery.Model.ProductCategory;
@@ -49,5 +49,22 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.my_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_calendar:
+                startActivity(new Intent(MainActivity.this, CalendarActivity.class));
+                return true;
+            case R.id.action_cart:
+                startActivity(new Intent(MainActivity.this, CartActivity.class));
+                return true;
+            case R.id.action_profile:
+                startActivity(new Intent(MainActivity.this, UserActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

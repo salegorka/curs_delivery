@@ -6,8 +6,11 @@
         <entry key="..\:/Android/curs_delivery/app/src/main/res/drawable/orange_button.xml" value="0.2985" />
         <entry key="..\:/Android/curs_delivery/app/src/main/res/drawable/orange_light_banner.xml" value="0.192" />
         <entry key="..\:/Android/curs_delivery/app/src/main/res/drawable/search_background.xml" value="0.192" />
+        <entry key="..\:/Android/curs_delivery/app/src/main/res/layout/activity_calendar.xml" value="0.21770833333333334" />
+        <entry key="..\:/Android/curs_delivery/app/src/main/res/layout/activity_cart.xml" value="0.21770833333333334" />
         <entry key="..\:/Android/curs_delivery/app/src/main/res/layout/activity_intro.xml" value="0.358695652173913" />
         <entry key="..\:/Android/curs_delivery/app/src/main/res/layout/activity_main.xml" value="0.5" />
+        <entry key="..\:/Android/curs_delivery/app/src/main/res/layout/activity_user.xml" value="0.21666666666666667" />
         <entry key="..\:/Android/curs_delivery/app/src/main/res/layout/product_row_item.xml" value="0.18385416666666668" />
         <entry key="..\:/Android/curs_delivery/app/src/main/res/menu/my_menu.xml" value="0.36666666666666664" />
       </map>
