@@ -10,7 +10,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.example.curs_delivery.Adapter.ProductAdapter;
 import com.example.curs_delivery.Adapter.ProductCategoryAdapter;
+import com.example.curs_delivery.Model.Product;
 import com.example.curs_delivery.Model.ProductCategory;
 import com.example.curs_delivery.R;
 
@@ -34,6 +36,17 @@ public class MainActivity extends AppCompatActivity {
         productCategoryList.add(new ProductCategory(3, "Категория 3"));
         productCategoryList.add(new ProductCategory(4, "Категория 4"));
         setProductCatRecycler(productCategoryList);
+
+        List<Product> products = new ArrayList<Product>();
+        products.add(new Product(1, "Картофельное пюре", "Картофельное пюре", "100"));
+        products.add(new Product(2, "Суп", "Суп", "150"));
+        products.add(new Product(3, "Котлеты", "Котлеты", "120"));
+        products.add(new Product(4, "Гречка", "Гречка", "80"));
+        products.add(new Product(5, "Салат", "Салат", "120"));
+
+        RecyclerView recyclerViewProduct = findViewById(R.id.product_recycler);
+        ProductAdapter productAdapter = new ProductAdapter(this, products);
+        recyclerViewProduct.setAdapter(productAdapter);
     }
 
     private void setProductCatRecycler(List<ProductCategory> productCategoryList) {
