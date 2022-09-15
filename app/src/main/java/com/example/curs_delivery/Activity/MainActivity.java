@@ -1,11 +1,19 @@
 package com.example.curs_delivery.Activity;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Request;
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,6 +24,7 @@ import com.example.curs_delivery.Model.Product;
 import com.example.curs_delivery.Model.ProductCategory;
 import com.example.curs_delivery.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         productCategoryList.add(new ProductCategory(3, "Категория 3"));
         productCategoryList.add(new ProductCategory(4, "Категория 4"));
         setProductCatRecycler(productCategoryList);
+
+        LoadMenu();
 
         List<Product> products = new ArrayList<Product>();
         products.add(new Product(1, "Картофельное пюре", "Картофельное пюре", "100"));
@@ -79,5 +90,23 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void LoadMenu() {
+        String url = "http://10.0.2.2:80/index.php";
+        Request request = new Request.Builder().url(url).build();
+        new OkHttpClient().newCall(request)
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(final Call call, IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(Call call, final Response response) throws IOException {
+                        String res = response.body().string();
+                        Log.d("Сеть", res);
+                    }
+                });
     }
 }

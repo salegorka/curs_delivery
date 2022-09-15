@@ -4,10 +4,10 @@ public class Product {
 
     // пока без категорий
 
-    Integer id;
-    String name;
-    String description;
-    String price;
+    public Integer id;
+    public String name;
+    public String description;
+    public String price;
 
     public Product(Integer id, String name, String description, String price) {
         this.id = id;
@@ -16,36 +16,5 @@ public class Product {
         this.price = price;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescripion(String description) {
-        this.description = description;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
 }
 
