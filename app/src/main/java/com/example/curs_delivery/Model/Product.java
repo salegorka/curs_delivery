@@ -7,9 +7,9 @@ public class Product {
     public Integer id;
     public String name;
     public String description;
-    public String price;
+    public Integer price;
 
-    public Product(Integer id, String name, String description, String price) {
+    public Product(Integer id, String name, String description, Integer price) {
         this.id = id;
         this.name = name;
         this.description = description;

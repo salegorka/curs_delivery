@@ -34,7 +34,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         Product product = products.get(position);
         holder.nameView.setText(product.name);
         holder.descriptionView.setText(product.description);
-        holder.priceView.setText(product.price);
+        holder.priceView.setText(String.format("%d руб.", product.price));
     }
 
     @Override

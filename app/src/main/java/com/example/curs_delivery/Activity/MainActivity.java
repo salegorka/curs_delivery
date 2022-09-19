@@ -25,13 +25,17 @@ import com.example.curs_delivery.Model.ProductCategory;
 import com.example.curs_delivery.R;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class MainActivity extends AppCompatActivity {
 
     ProductCategoryAdapter productCategoryAdapter;
     RecyclerView productCatRecycler;
+    ArrayList<Product> productList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         LoadMenu();
 
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1, "Картофельное пюре", "Картофельное пюре", "100"));
-        products.add(new Product(2, "Суп", "Суп", "150"));
-        products.add(new Product(3, "Котлеты", "Котлеты", "120"));
-        products.add(new Product(4, "Гречка", "Гречка", "80"));
-        products.add(new Product(5, "Салат", "Салат", "120"));
-
-        RecyclerView recyclerViewProduct = findViewById(R.id.product_recycler);
-        ProductAdapter productAdapter = new ProductAdapter(this, products);
-        recyclerViewProduct.setAdapter(productAdapter);
     }
 
     private void setProductCatRecycler(List<ProductCategory> productCategoryList) {
@@ -93,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void LoadMenu() {
-        String url = "http://10.0.2.2:80/index.php";
+        String url = "http://10.0.2.2:80/api/products.php";
         Request request = new Request.Builder().url(url).build();
         new OkHttpClient().newCall(request)
                 .enqueue(new Callback() {
@@ -105,8 +99,22 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call call, final Response response) throws IOException {
                         String res = response.body().string();
-                        Log.d("Сеть", res);
+                        Log.d("TEST", res);
+
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Gson gson = new Gson();
+                                Type type = new TypeToken<ArrayList<Product>>(){}.getType();
+                                ArrayList<Product> productList = gson.fromJson(res, type);
+
+                                RecyclerView recyclerViewProduct = findViewById(R.id.product_recycler);
+                                ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, productList);
+                                recyclerViewProduct.setAdapter(productAdapter);
+                            }
+                        });
                     }
                 });
     }
+
 }
