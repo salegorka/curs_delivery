@@ -4,6 +4,7 @@
     package="com.example.curs_delivery">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
+        android:name="com.example.curs_delivery.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -33,9 +34,9 @@
             android:label="Корзина">
         </activity>
         <activity
-            android:name=".Activity.CalendarActivity"
+            android:name=".Activity.OrdersActivity"
             android:exported="false"
-            android:label="Календарь">
+            android:label="Заказы">
         </activity>
         <activity
             android:name=".Activity.UserActivity"

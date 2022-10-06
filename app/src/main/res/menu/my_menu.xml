@@ -7,10 +7,10 @@
         android:icon="@drawable/shop"
         android:title="@string/menu" />
     <item
-        android:id="@+id/action_calendar"
+        android:id="@+id/action_orders"
         app:showAsAction="always"
         android:icon="@drawable/calendar"
-        android:title="@string/calendar" />
+        android:title="Заказы" />
     <item
         android:id="@+id/action_cart"
         app:showAsAction="always"

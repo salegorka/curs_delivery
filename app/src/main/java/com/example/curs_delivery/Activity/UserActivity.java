@@ -32,8 +32,8 @@ public class UserActivity extends AppCompatActivity {
             case R.id.action_menu:
                 startActivity(new Intent(UserActivity.this, MainActivity.class));
                 return true;
-            case R.id.action_calendar:
-                startActivity(new Intent(UserActivity.this, CalendarActivity.class));
+            case R.id.action_orders:
+                startActivity(new Intent(UserActivity.this, OrdersActivity.class));
                 return true;
             case R.id.action_cart:
                 startActivity(new Intent(UserActivity.this, CartActivity.class));

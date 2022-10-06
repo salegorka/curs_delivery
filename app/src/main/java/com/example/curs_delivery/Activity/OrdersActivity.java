@@ -10,12 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.curs_delivery.R;
 
-public class CalendarActivity extends AppCompatActivity {
+public class OrdersActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar);
+        setContentView(R.layout.activity_orders);
         Intent intent = getIntent();
 
     }
@@ -31,13 +31,13 @@ public class CalendarActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_menu:
-                startActivity(new Intent(CalendarActivity.this, MainActivity.class));
+                startActivity(new Intent(OrdersActivity.this, MainActivity.class));
                 return true;
             case R.id.action_cart:
-                startActivity(new Intent(CalendarActivity.this, CartActivity.class));
+                startActivity(new Intent(OrdersActivity.this, CartActivity.class));
                 return true;
             case R.id.action_profile:
-                startActivity(new Intent(CalendarActivity.this, UserActivity.class));
+                startActivity(new Intent(OrdersActivity.this, UserActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

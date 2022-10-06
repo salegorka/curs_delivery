@@ -32,8 +32,8 @@ public class CartActivity extends AppCompatActivity {
             case R.id.action_menu:
                 startActivity(new Intent(CartActivity.this, MainActivity.class));
                 return true;
-            case R.id.action_calendar:
-                startActivity(new Intent(CartActivity.this, CalendarActivity.class));
+            case R.id.action_orders:
+                startActivity(new Intent(CartActivity.this, OrdersActivity.class));
                 return true;
             case R.id.action_profile:
                 startActivity(new Intent(CartActivity.this, UserActivity.class));

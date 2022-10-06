@@ -9,8 +9,8 @@ import okhttp3.Response;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +20,9 @@ import android.view.MenuItem;
 
 import com.example.curs_delivery.Adapter.ProductAdapter;
 import com.example.curs_delivery.Adapter.ProductCategoryAdapter;
+import com.example.curs_delivery.App;
+import com.example.curs_delivery.Database.AppDatabase;
+import com.example.curs_delivery.Database.ProductDao;
 import com.example.curs_delivery.Model.Product;
 import com.example.curs_delivery.Model.ProductCategory;
 import com.example.curs_delivery.R;
@@ -36,12 +39,15 @@ public class MainActivity extends AppCompatActivity {
     ProductCategoryAdapter productCategoryAdapter;
     RecyclerView productCatRecycler;
     ArrayList<Product> productList;
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intent = getIntent();
+
+        db = App.getInstance().getDatabase();
 
         List<ProductCategory> productCategoryList = new ArrayList<>();
         productCategoryList.add(new ProductCategory(1, "Категория 1"));
@@ -72,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_calendar:
-                startActivity(new Intent(MainActivity.this, CalendarActivity.class));
+            case R.id.action_orders:
+                startActivity(new Intent(MainActivity.this, OrdersActivity.class));
                 return true;
             case R.id.action_cart:
                 startActivity(new Intent(MainActivity.this, CartActivity.class));
@@ -86,6 +92,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void SetUpMenu() {
+        ProductDao productDao = db.productDao();
+        List<Product> productList =  productDao.getAll();
+
+        RecyclerView recyclerViewProduct = findViewById(R.id.product_recycler);
+        ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, productList);
+        recyclerViewProduct.setAdapter(productAdapter);
+    }
+
     private void LoadMenu() {
         String url = "http://10.0.2.2:80/api/products.php";
         Request request = new Request.Builder().url(url).build();
@@ -94,6 +109,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(final Call call, IOException e) {
                         e.printStackTrace();
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                SetUpMenu();
+                            }
+                        });
                     }
 
                     @Override
@@ -101,16 +122,17 @@ public class MainActivity extends AppCompatActivity {
                         String res = response.body().string();
                         Log.d("TEST", res);
 
+                        Gson gson = new Gson();
+                        Type type = new TypeToken<ArrayList<Product>>(){}.getType();
+                        ArrayList<Product> productList = gson.fromJson(res, type);
+
+                        ProductDao productDao = db.productDao();
+                        productDao.insertAll(productList);
+
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Gson gson = new Gson();
-                                Type type = new TypeToken<ArrayList<Product>>(){}.getType();
-                                ArrayList<Product> productList = gson.fromJson(res, type);
-
-                                RecyclerView recyclerViewProduct = findViewById(R.id.product_recycler);
-                                ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, productList);
-                                recyclerViewProduct.setAdapter(productAdapter);
+                                SetUpMenu();
                             }
                         });
                     }
