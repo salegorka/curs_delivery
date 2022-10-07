@@ -12,17 +12,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.curs_delivery.Adapter.ProductAdapter;
 import com.example.curs_delivery.Adapter.ProductCategoryAdapter;
 import com.example.curs_delivery.App;
 import com.example.curs_delivery.Database.AppDatabase;
+import com.example.curs_delivery.Database.CartDao;
 import com.example.curs_delivery.Database.ProductDao;
+import com.example.curs_delivery.Model.Cart;
 import com.example.curs_delivery.Model.Product;
 import com.example.curs_delivery.Model.ProductCategory;
 import com.example.curs_delivery.R;
@@ -97,8 +101,17 @@ public class MainActivity extends AppCompatActivity {
         List<Product> productList =  productDao.getAll();
 
         RecyclerView recyclerViewProduct = findViewById(R.id.product_recycler);
-        ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, productList);
+        ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, productList, new ProductAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(Product product) {
+                clickOnMenuItem(product);
+            }
+        });
         recyclerViewProduct.setAdapter(productAdapter);
+    }
+
+    private void clickOnMenuItem(Product product) {
+
     }
 
     private void LoadMenu() {
@@ -137,6 +150,45 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 });
+    }
+
+    public class addProductTask extends AsyncTask<Product, Integer, String> {
+
+        @Override
+        protected String doInBackground(Product... products) {
+            try {
+                CartDao cartDao = db.cartDao();
+                List<Cart> currentCart = cartDao.getItems();
+                Cart currentProduct = null;
+
+                if (currentCart.size() != 0) {
+                    for (int i = 0; i < currentCart.size(); i++) {
+                        if (currentCart.get(i).product_id == products[0].id) {
+                            currentProduct = currentCart.get(i);
+                        }
+                    }
+                }
+
+                if (currentProduct == null) {
+                    // новый продукт, вставляем
+                    currentProduct = new Cart(products[0].name, products[0].id, 1, products[0].price);
+                    cartDao.insertCart(currentProduct);
+                } else {
+                    // старый продукт, обновляем
+                    currentProduct.amount += 1;
+                    cartDao.updateCart(currentProduct);
+                }
+
+                return "Продукт добавлен";
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Ошибка. Добавление не удалось";
+            }
+        }
+
+        protected void onPostExecute(String... messages) {
+            Toast.makeText(MainActivity.this, messages[0], Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
