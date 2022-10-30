@@ -14,5 +14,8 @@ public interface ProductDao {
     List<Product> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(ArrayList<Product> products);
+    void insertAll(List<Product> products);
+
+    @Query("SELECT count(id) FROM product")
+    int countProducts();
 }

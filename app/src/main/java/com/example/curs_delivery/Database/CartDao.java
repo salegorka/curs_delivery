@@ -18,6 +18,9 @@ public interface CartDao {
     @Query("SELECT * from Cart")
     List<Cart> getItems();
 
+    @Query("SELECT count(id) from cart")
+    int countCarts();
+
     @Query("DELETE FROM Cart where product_id =:product_id")
     void deleteProduct(int product_id);
 

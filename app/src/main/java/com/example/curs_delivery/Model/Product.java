@@ -9,7 +9,7 @@ public class Product {
 
     // пока без категорий
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
 
     @ColumnInfo(name="name")
@@ -21,8 +21,7 @@ public class Product {
     @ColumnInfo(name="price")
     public int price;
 
-    public Product(int id, String name, String description, int price) {
-        this.id = id;
+    public Product(String name, String description, int price) {
         this.name = name;
         this.description = description;
         this.price = price;

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     ProductCategoryAdapter productCategoryAdapter;
     RecyclerView productCatRecycler;
-    ArrayList<Product> productList;
+    List<Product> productList;
     AppDatabase db;
 
     @Override
@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         setProductCatRecycler(productCategoryList);
 
         LoadMenu();
-
     }
 
     private void setProductCatRecycler(List<ProductCategory> productCategoryList) {
@@ -97,11 +96,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void SetUpMenu() {
-        ProductDao productDao = db.productDao();
-        List<Product> productList =  productDao.getAll();
-
         RecyclerView recyclerViewProduct = findViewById(R.id.product_recycler);
-        ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, productList, new ProductAdapter.ItemClickListener() {
+        ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, this.productList, new ProductAdapter.ItemClickListener() {
             @Override
             public void onItemClick(Product product) {
                 clickOnMenuItem(product);
@@ -111,84 +107,54 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clickOnMenuItem(Product product) {
+        // Добавляем продукт в корзину, и показываем сообщение
+        CartDao cartDao = db.cartDao();
+        List<Cart> currentCart = cartDao.getItems();
+        Cart currentProduct = null;
 
-    }
-
-    private void LoadMenu() {
-        String url = "http://10.0.2.2:80/api/products.php";
-        Request request = new Request.Builder().url(url).build();
-        new OkHttpClient().newCall(request)
-                .enqueue(new Callback() {
-                    @Override
-                    public void onFailure(final Call call, IOException e) {
-                        e.printStackTrace();
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                SetUpMenu();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onResponse(Call call, final Response response) throws IOException {
-                        String res = response.body().string();
-                        Log.d("TEST", res);
-
-                        Gson gson = new Gson();
-                        Type type = new TypeToken<ArrayList<Product>>(){}.getType();
-                        ArrayList<Product> productList = gson.fromJson(res, type);
-
-                        ProductDao productDao = db.productDao();
-                        productDao.insertAll(productList);
-
-                        MainActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                SetUpMenu();
-                            }
-                        });
-                    }
-                });
-    }
-
-    public class addProductTask extends AsyncTask<Product, Integer, String> {
-
-        @Override
-        protected String doInBackground(Product... products) {
-            try {
-                CartDao cartDao = db.cartDao();
-                List<Cart> currentCart = cartDao.getItems();
-                Cart currentProduct = null;
-
-                if (currentCart.size() != 0) {
-                    for (int i = 0; i < currentCart.size(); i++) {
-                        if (currentCart.get(i).product_id == products[0].id) {
-                            currentProduct = currentCart.get(i);
-                        }
-                    }
+        if (currentCart.size() != 0) {
+            for (int i = 0; i < currentCart.size(); i++) {
+                if (currentCart.get(i).product_id == product.id) {
+                    currentProduct = currentCart.get(i);
                 }
-
-                if (currentProduct == null) {
-                    // новый продукт, вставляем
-                    currentProduct = new Cart(products[0].name, products[0].id, 1, products[0].price);
-                    cartDao.insertCart(currentProduct);
-                } else {
-                    // старый продукт, обновляем
-                    currentProduct.amount += 1;
-                    cartDao.updateCart(currentProduct);
-                }
-
-                return "Продукт добавлен";
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "Ошибка. Добавление не удалось";
             }
         }
 
-        protected void onPostExecute(String... messages) {
-            Toast.makeText(MainActivity.this, messages[0], Toast.LENGTH_SHORT).show();
+        if (currentProduct == null) {
+            // новый продукт, вставляем
+            currentProduct = new Cart(product.name, product.id, 1, product.price);
+            cartDao.insertCart(currentProduct);
+        } else {
+            // старый продукт, обновляем
+            currentProduct.amount += 1;
+            cartDao.updateCart(currentProduct);
         }
+        Toast.makeText(getApplicationContext(), "Продукт добавлен в корзину!", Toast.LENGTH_LONG).show();
     }
+
+    private void LoadMenu() {
+        ProductDao productDao = db.productDao();
+        int numProduct = productDao.countProducts();
+        List<Product> productList = new ArrayList<Product>();
+        if (numProduct < 5) {
+            //Бд пуста, добавляем данные - Это заглушка
+            Product product1 = new Product("Суп Борщ", "Суп Борщ", 100);
+            productList.add(product1);
+            Product product2 = new Product("Пюре картофельное", "Пюре картофельное", 60);
+            productList.add(product2);
+            Product product3 = new Product("Компот", "Компот из сухофруктов", 20);
+            productList.add(product3);
+            Product product4 = new Product("Котлета по киевски", "Котлета куриная с маслом", 70);
+            productList.add(product4);
+            Product product5 = new Product("Гречка", "Вареная гречка", 15);
+            productList.add(product5);
+            productDao.insertAll(productList);
+        } else {
+            productList = productDao.getAll();
+        }
+        this.productList = productList;
+        SetUpMenu();
+    }
+
 
 }
