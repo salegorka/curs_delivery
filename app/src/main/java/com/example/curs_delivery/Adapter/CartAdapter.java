@@ -39,10 +39,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull CartAdapter.ViewHolder holder, int position) {
         Cart cart = carts.get(position);
         holder.productNameView.setText(cart.product_name);
-        holder.amountView.setText(cart.amount);
-        holder.priceView.setText(String.format("%d руб." ,cart.price));
+        holder.amountView.setText(String.valueOf(cart.amount));
+        holder.priceView.setText(String.format("%d руб.", cart.price));
+        holder.fullPriceView.setText(String.format("%d руб.", cart.price * cart.amount));
         holder.buttonDelete.setOnClickListener(view -> {
-            myItemClickListener.onItemClick(carts.get(position));
+            myItemClickListener.onItemClick(carts.get(position), ItemClickListener.OP_DEL);
+        });
+        holder.buttonMinus.setOnClickListener(view -> {
+            myItemClickListener.onItemClick(carts.get(position), ItemClickListener.OP_MINUS);
+        });
+        holder.buttonPlus.setOnClickListener(view -> {
+            myItemClickListener.onItemClick(carts.get(position), ItemClickListener.OP_PLUS);
         });
     }
 
@@ -52,18 +59,24 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     }
 
     public interface ItemClickListener {
-        void onItemClick(Cart cart);
+        public static final int OP_DEL = 1;
+        public static final int OP_MINUS = 2;
+        public static final int OP_PLUS = 3;
+        void onItemClick(Cart cart, int operation);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView productNameView, amountView, priceView;
-        final Button buttonDelete;
+        final TextView productNameView, amountView, priceView, fullPriceView;
+        final Button buttonDelete, buttonMinus, buttonPlus;
         ViewHolder(View view) {
             super(view);
             productNameView = view.findViewById(R.id.textViewProductName);
             amountView = view.findViewById(R.id.textViewAmount);
             priceView = view.findViewById(R.id.textViewPrice);
             buttonDelete = view.findViewById(R.id.buttonDelete);
+            buttonMinus = view.findViewById(R.id.buttonMinus);
+            buttonPlus = view.findViewById(R.id.buttonPlus);
+            fullPriceView = view.findViewById(R.id.textViewFullPrice);
         }
 
     }

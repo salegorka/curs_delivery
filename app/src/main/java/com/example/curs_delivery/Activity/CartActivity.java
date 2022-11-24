@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.curs_delivery.Adapter.CartAdapter;
@@ -29,6 +31,12 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
         db = App.getInstance().getDatabase();
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         setUpCart();
     }
 
@@ -41,23 +49,60 @@ public class CartActivity extends AppCompatActivity {
 
     private void setUpCart() {
         CartDao cartDao = db.cartDao();
+        RecyclerView cartRecycler = findViewById(R.id.cart_recycler);
         int amountCart = cartDao.countCarts();
         if (amountCart == 0) {
             TextView textViewHeader = (TextView)findViewById(R.id.textViewHeader);
             textViewHeader.setText("Корзина пуста");
+            cartRecycler.setVisibility(View.GONE);
+            ConstraintLayout cartControl = (ConstraintLayout)findViewById(R.id.cartControlLayout);
+            cartControl.setVisibility(View.GONE);
         } else {
+            cartRecycler.setVisibility(View.VISIBLE);
             List<Cart> carts = cartDao.getItems();
-            RecyclerView cartRecycler = findViewById(R.id.cart_recycler);
             CartAdapter cartAdapter = new CartAdapter(CartActivity.this, carts, new CartAdapter.ItemClickListener() {
                 @Override
-                public void onItemClick(Cart cart) { clickOnCartItem(cart);}
+                public void onItemClick(Cart cart, int op) { clickOnCartItem(cart, op);}
             });
             cartRecycler.setAdapter(cartAdapter);
+            setUpFullPriceInfo();
         }
     }
 
-    private void clickOnCartItem(Cart cart) {
+    private void clickOnCartItem(Cart cart, int op) {
+        CartDao cartDao = db.cartDao();
+        switch(op) {
+            case CartAdapter.ItemClickListener.OP_DEL:
+                cartDao.deleteProduct(cart.product_id);
+                setUpCart();
+                break;
+            case CartAdapter.ItemClickListener.OP_MINUS:
+                if (cart.amount > 1) {
+                    cartDao.updateProductAmount(cart.amount - 1, cart.product_id);
+                    setUpCart();
+                } else {
+                    cartDao.deleteProduct(cart.product_id);
+                    setUpCart();
+                }
+                break;
+            case CartAdapter.ItemClickListener.OP_PLUS:
+                cartDao.updateProductAmount(cart.amount + 1, cart.product_id);
+                setUpCart();
+                break;
+        }
+    }
 
+    private void setUpFullPriceInfo() {
+        CartDao cartDao = db.cartDao();
+        List<Cart> carts = cartDao.getItems();
+        int fullPrice = 0;
+        for (Cart cart : carts ) {
+            fullPrice = (cart.price * cart.amount) + fullPrice;
+        }
+        ConstraintLayout cartControl = (ConstraintLayout)findViewById(R.id.cartControlLayout);
+        cartControl.setVisibility(View.VISIBLE);
+        TextView fullPriceView = findViewById(R.id.allFullPriceView);
+        fullPriceView.setText(String.format("%d руб.", fullPrice));
     }
 
     @Override
