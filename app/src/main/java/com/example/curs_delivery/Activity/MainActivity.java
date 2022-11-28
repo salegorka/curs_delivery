@@ -110,22 +110,29 @@ public class MainActivity extends AppCompatActivity {
         // Добавляем продукт в корзину, и показываем сообщение
         CartDao cartDao = db.cartDao();
         List<Cart> currentCart = cartDao.getItems();
+
         Cart currentProduct = null;
 
+        Log.d("Test", currentCart.toString());
+        Log.d("Test", product.name);
+        Log.d("Test", String.valueOf(product.id));
         if (currentCart.size() != 0) {
             for (int i = 0; i < currentCart.size(); i++) {
+                Log.d("Test", String.valueOf(currentCart.get(i).product_id));
+                Log.d("Test", String.valueOf(product.id));
                 if (currentCart.get(i).product_id == product.id) {
                     currentProduct = currentCart.get(i);
                 }
             }
         }
-
         if (currentProduct == null) {
             // новый продукт, вставляем
+            Log.d("Test", "new");
             currentProduct = new Cart(product.name, product.id, 1, product.price);
             cartDao.insertCart(currentProduct);
         } else {
             // старый продукт, обновляем
+            Log.d("Test", currentProduct.product_name);
             currentProduct.amount += 1;
             cartDao.updateCart(currentProduct);
         }
@@ -138,15 +145,15 @@ public class MainActivity extends AppCompatActivity {
         List<Product> productList = new ArrayList<Product>();
         if (numProduct < 5) {
             //Бд пуста, добавляем данные - Это заглушка
-            Product product1 = new Product("Суп Борщ", "Суп Борщ", 100);
+            Product product1 = new Product(1, "Суп Борщ", "Суп Борщ", 100);
             productList.add(product1);
-            Product product2 = new Product("Пюре картофельное", "Пюре картофельное", 60);
+            Product product2 = new Product(2, "Пюре картофельное", "Пюре картофельное", 60);
             productList.add(product2);
-            Product product3 = new Product("Компот", "Компот из сухофруктов", 20);
+            Product product3 = new Product(3, "Компот", "Компот из сухофруктов", 20);
             productList.add(product3);
-            Product product4 = new Product("Котлета по киевски", "Котлета куриная с маслом", 70);
+            Product product4 = new Product(4, "Котлета по киевски", "Котлета куриная с маслом", 70);
             productList.add(product4);
-            Product product5 = new Product("Гречка", "Вареная гречка", 15);
+            Product product5 = new Product(5 ,"Гречка", "Вареная гречка", 15);
             productList.add(product5);
             productDao.insertAll(productList);
         } else {

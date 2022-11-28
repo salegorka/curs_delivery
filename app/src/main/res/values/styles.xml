@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="orange">#FFA500</color>
+    <color name="my_black">#000000</color>
+    <style name="MyTheme1" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarStyle">@style/MyActionBar</item>
+    </style>
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="background">@color/orange</item>
+        <item name="titleTextStyle">@style/myTitleTextStyle</item>
+    </style>
+    <style name="myTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/my_black</item>
+    </style>
+</resources>
