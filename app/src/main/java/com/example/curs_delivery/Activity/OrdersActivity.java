@@ -7,17 +7,38 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Database;
 
+import com.example.curs_delivery.Adapter.OrderAdapter;
+import com.example.curs_delivery.App;
+import com.example.curs_delivery.Database.AppDatabase;
+import com.example.curs_delivery.Database.OrderDao;
+import com.example.curs_delivery.Model.Order;
 import com.example.curs_delivery.R;
 
+import java.util.List;
+
 public class OrdersActivity extends AppCompatActivity {
+
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
         Intent intent = getIntent();
+        db = App.getInstance().getDatabase();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        RecyclerView ordersRecycler = (RecyclerView)findViewById(R.id.ordersRecycler);
+        OrderDao orderDao = db.orderDao();
+        List<Order> orders = orderDao.getItems();
+        OrderAdapter ordersAdapter = new OrderAdapter(OrdersActivity.this, orders);
+        ordersRecycler.setAdapter(ordersAdapter);
     }
 
     @Override
