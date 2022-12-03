@@ -5,18 +5,27 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.curs_delivery.R;
 
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        Button buttonExit = findViewById(R.id.buttonExit);
+        buttonExit.setOnClickListener(this);
+    }
+
+    public void onClick(View v) {
+        finishAffinity();
+        System.exit(0);
     }
 
     @Override
